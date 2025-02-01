@@ -33,8 +33,23 @@ export async function createWordBankDB(
   }
 }
 
-export async function deleteWordBankDB() {}
+export async function getAllWordBanksByUserDB(
+  user_id: number
+): Promise<WordBank[] | null> {
+  try {
+    const [rows] = await mysqlDB.query<mysql.RowDataPacket[]>(
+      'SELECT * FROM wordBanks WHERE user_id = ? ',
+      [user_id]
+    );
+
+    return rows as WordBank[];
+  } catch (error) {
+    console.log('error creating user in db');
+    console.log(error);
+    return null;
+  }
+}
 
 export async function updateWordBankDB() {}
 
-export async function getAllWordBanksByUserDB() {}
+export async function deleteWordBankDB() {}
