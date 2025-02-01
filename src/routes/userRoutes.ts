@@ -2,8 +2,6 @@ import { Router } from 'express';
 import {
   getUserById,
   getToken,
-  register,
-  login,
   logout,
   updateUser,
   deleteUser,
@@ -14,12 +12,10 @@ const router = Router();
 router.post('/token/:id', getToken);
 
 router.get('/:id', authenticateToken, getUserById);
-router.delete('/delete/:id', authenticateToken, deleteUser);
+router.delete('/:id', authenticateToken, deleteUser);
 
-router.post('/register', register);
-router.post('/login', login);
 router.post('/logout/:id', logout);
 
-router.post('/update/:id', authenticateToken, updateUser);
+router.patch('/:id', authenticateToken, updateUser);
 
 export default router;

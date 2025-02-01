@@ -4,6 +4,7 @@ import { mysqlDB } from './db/db';
 import express, { Express } from 'express';
 import userRouter from './routes/userRoutes';
 import wordBanksRouter from './routes/wordBankRoutes';
+import publicRoutes from './routes/publicRoutes';
 
 const app: Express = express();
 const port = process.env.PORT || 3300;
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
+app.use('/', publicRoutes);
 app.use('/v1/users', userRouter);
 app.use('/v1/wordBanks', wordBanksRouter);
 

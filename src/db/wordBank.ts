@@ -50,6 +50,49 @@ export async function getAllWordBanksByUserDB(
   }
 }
 
-export async function updateWordBankDB() {}
+export async function updateWordBankNameDB(
+  id: number,
+  user_id: number,
+  name: string
+) {
+  try {
+    const [results] = await mysqlDB.query<ResultSetHeader>(
+      'UPDATE wordBanks SET name = ? WHERE id = ? AND user_id = ?',
+      [name, id, user_id]
+    );
+
+    if (results.affectedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log('error updating word bank name in db');
+    return false;
+  }
+}
+export async function updateWordBankWordsDB(
+  id: number,
+  user_id: number,
+  words: string[]
+) {
+  try {
+    const wordsJson = JSON.stringify(words);
+
+    const [results] = await mysqlDB.query<ResultSetHeader>(
+      'UPDATE wordBanks SET words = ? WHERE id = ? AND user_id = ?',
+      [wordsJson, id, user_id]
+    );
+
+    if (results.affectedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log('error updating word bank words in db');
+    return false;
+  }
+}
 
 export async function deleteWordBankDB() {}
