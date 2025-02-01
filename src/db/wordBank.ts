@@ -95,4 +95,23 @@ export async function updateWordBankWordsDB(
   }
 }
 
-export async function deleteWordBankDB() {}
+export async function deleteWordBankDB(
+  id: number,
+  user_id: number
+): Promise<boolean> {
+  try {
+    const [results] = await mysqlDB.query<ResultSetHeader>(
+      'DELETE from  wordBanks  where id = ? And user_id = ?',
+      [id, user_id]
+    );
+
+    if (results.affectedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log('error deleting wordbank in db');
+    return false;
+  }
+}

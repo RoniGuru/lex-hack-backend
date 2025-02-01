@@ -5,6 +5,7 @@ import {
   createWordBankDB,
   getAllWordBanksByUserDB,
   updateWordBankNameDB,
+  deleteWordBankDB,
 } from '../db/wordBank';
 
 dotenv.config();
@@ -78,4 +79,19 @@ export async function updateWordBank(req: Request, res: Response) {
   }
 }
 
-export async function deleteWordBank() {}
+export async function deleteWordBank(req: Request, res: Response) {
+  try {
+    const user_id = Number(req.params.user_id);
+    const id = Number(req.params.id);
+
+    if (!user_id || !id) {
+      res.status(400).json({ error: 'no id' });
+      return;
+    }
+
+    const result = await deleteWordBankDB(id, user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'failed to delete word bank' });
+  }
+}
