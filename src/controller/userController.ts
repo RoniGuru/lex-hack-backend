@@ -10,6 +10,7 @@ import {
   updateUserRefreshTokenDB,
   checkUserNameDB,
   getUserByNameDB,
+  updateUserEmailDB,
 } from '../db/user';
 import dotenv from 'dotenv';
 
@@ -167,7 +168,7 @@ export async function deleteUser(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   try {
     const user = await getUserByIdDB(Number(req.params.id));
-    const { newName, password, newPassword } = req.body;
+    const { newName, password, newPassword, newEmail } = req.body;
 
     if (!user) {
       res.status(404).json({ error: 'User not found' });
@@ -192,6 +193,8 @@ export async function updateUser(req: Request, res: Response) {
       }
     } else if (newName) {
       result = await updateUserNameDB(Number(req.params.id), newName);
+    } else if (newEmail) {
+      result = await updateUserEmailDB(Number(req.params.id), newEmail);
     }
 
     if (result) {

@@ -144,6 +144,27 @@ export async function updateUserPasswordDB(
   }
 }
 
+export async function updateUserEmailDB(
+  id: number,
+  email: string
+): Promise<boolean> {
+  try {
+    const [results] = await mysqlDB.query<ResultSetHeader>(
+      'UPDATE users SET email = ? WHERE id = ?',
+      [email, id]
+    );
+
+    if (results.affectedRows > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log('error updating user email in db');
+    return false;
+  }
+}
+
 export async function updateUserRefreshTokenDB(
   id: number,
   refresh_token: string
