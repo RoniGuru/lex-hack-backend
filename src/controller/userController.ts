@@ -157,6 +157,7 @@ export async function deleteUser(req: Request, res: Response) {
       }
     } else {
       res.status(404).json({ error: 'invalid password' });
+      return;
     }
 
     res.status(200).json();
