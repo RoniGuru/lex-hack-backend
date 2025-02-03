@@ -83,7 +83,7 @@ export async function login(req: Request, res: Response) {
 
     res.json({
       accessToken,
-      user: { id: user.id, name: user.name },
+      user: { id: user.id, name: user.name, email: user.email },
     });
   } catch (error) {
     console.log(error);
