@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const jwt_1 = require("../middleware/jwt");
+const express_1 = require("express");
+const wordBankController_1 = require("../controller/wordBankController");
+const router = (0, express_1.Router)();
+router.post('/user/:id', jwt_1.authenticateToken, wordBankController_1.createWordBank);
+router.get('/user/:id', jwt_1.authenticateToken, wordBankController_1.getAllWordBanksByUser);
+router.patch('/:id/user/:user_id', jwt_1.authenticateToken, wordBankController_1.updateWordBank);
+router.delete('/:id/user/:user_id', jwt_1.authenticateToken, wordBankController_1.deleteWordBank);
+exports.default = router;

@@ -6,6 +6,12 @@ import userRouter from './routes/userRoutes';
 import wordBanksRouter from './routes/wordBankRoutes';
 import publicRoutes from './routes/publicRoutes';
 
+import dotenv from 'dotenv';
+const environment = process.env.NODE_ENV || 'development';
+dotenv.config({
+  path: environment === 'production' ? '.env.production' : '.env.development',
+});
+
 const app: Express = express();
 const port = process.env.PORT || 3300;
 
@@ -19,12 +25,26 @@ app.use('/v1/wordBanks', wordBanksRouter);
 
 async function initializeDB() {
   console.log('Connected!');
+  type NodeEnv = 'development' | 'production' | 'test';
 
-  // await mysqlDB.query('DROP TABLE IF EXISTS users');
-  await mysqlDB.query('DROP DATABASE IF EXISTS word_test');
+  // Get the environment
+  const environment: NodeEnv =
+    (process.env.NODE_ENV as NodeEnv) || 'development';
 
-  await mysqlDB.query('CREATE DATABASE word_test');
-  await mysqlDB.query('USE word_test');
+  // Helper function to check environment
+  const isDevelopment = (): boolean => environment === 'development';
+
+  // Usage example
+  if (isDevelopment()) {
+    console.log('Running in development mode');
+    await mysqlDB.query('DROP DATABASE IF EXISTS word_test');
+    await mysqlDB.query('USE word_test');
+  } else {
+    console.log('Running in production mode');
+    await mysqlDB.query('CREATE DATABASE IF NOT EXISTS lex_prod');
+    await mysqlDB.query('USE lex_prod');
+  }
+
   await mysqlDB.query(
     'CREATE TABLE IF NOT EXISTS users (id INT  PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL,email VARCHAR(255) , refresh_token VARCHAR(255), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP )'
   );
