@@ -20,7 +20,6 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: 'http://lexhack-frontend-s3.s3-website.eu-west-2.amazonaws.com',
-    credentials: true,
   })
 );
 
