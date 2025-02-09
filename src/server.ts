@@ -38,6 +38,7 @@ async function initializeDB() {
   if (isDevelopment()) {
     console.log('Running in development mode');
     await mysqlDB.query('DROP DATABASE IF EXISTS word_test');
+    await mysqlDB.query('CREATE DATABASE word_test');
     await mysqlDB.query('USE word_test');
   } else {
     console.log('Running in production mode');
@@ -55,7 +56,7 @@ async function initializeDB() {
 }
 
 app.listen(port, async () => {
-  console.log(`[server]: Server is running at http://localhost:${port}sssddd`);
+  console.log(`[server]: Server is running at http://localhost:${port}`);
 
   await initializeDB();
 });
